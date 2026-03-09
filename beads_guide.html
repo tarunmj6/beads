@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beads — Complete Usage Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3f;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --accent4: #f7971e;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --code-bg: #0d0d15;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0a0a0f 0%, #12103a 50%, #0a0a0f 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,0.15) 0%, transparent 70%);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(108,99,255,0.15);
+    border: 1px solid rgba(108,99,255,0.4);
+    color: var(--accent);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    position: relative;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 18px;
+    max-width: 600px;
+    margin: 16px auto 0;
+    position: relative;
+  }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    gap: 8px;
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 6px 14px;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .nav a:hover {
+    color: var(--accent);
+    border-color: rgba(108,99,255,0.3);
+    background: rgba(108,99,255,0.08);
+  }
+
+  /* Main layout */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 80px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .section h2 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+
+  .section p {
+    color: var(--muted);
+    margin-bottom: 16px;
+    max-width: 700px;
+  }
+
+  /* Code blocks */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .code-dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .c-green { color: var(--accent3); }
+  .c-yellow { color: var(--accent4); }
+  .c-purple { color: var(--accent); }
+  .c-red { color: var(--accent2); }
+  .c-muted { color: var(--muted); }
+  .c-white { color: var(--text); }
+
+  /* Flowchart */
+  .flowchart {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 24px 0;
+  }
+
+  .flow-title {
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .flow-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 140px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .flow-node.start { border-color: var(--accent3); color: var(--accent3); }
+  .flow-node.action { border-color: var(--accent); color: var(--accent); }
+  .flow-node.agent { border-color: var(--accent4); color: var(--accent4); }
+  .flow-node.end { border-color: var(--accent2); color: var(--accent2); }
+  .flow-node.decision {
+    border-color: var(--accent4);
+    color: var(--accent4);
+    transform: rotate(0deg);
+    background: rgba(247,151,30,0.08);
+  }
+
+  .flow-node small {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 4px;
+  }
+
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .flow-arrow.down {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--muted);
+    margin: 4px 0;
+  }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: rgba(108,99,255,0.4); }
+
+  .card-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Workflow scenario */
+  .scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+
+  .scenario-header {
+    padding: 16px 24px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .scenario-badge {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .badge-solo { background: rgba(67,233,123,0.15); color: var(--accent3); }
+  .badge-multi { background: rgba(108,99,255,0.15); color: var(--accent); }
+  .badge-agent { background: rgba(247,151,30,0.15); color: var(--accent4); }
+
+  .scenario-body { padding: 24px; }
+
+  .scenario-title { font-size: 18px; font-weight: 700; }
+
+  /* Step list */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: rgba(108,99,255,0.2);
+    border: 1px solid rgba(108,99,255,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .steps li .step-content h4 {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .steps li .step-content p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+
+  /* Command reference table */
+  .cmd-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+
+  .cmd-table th {
+    text-align: left;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .cmd-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .cmd-table tr:last-child td { border-bottom: none; }
+  .cmd-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .cmd-table code {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 12px;
+    background: rgba(108,99,255,0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .cmd-table td:last-child { color: var(--muted); }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 60px 0;
+  }
+
+  /* Tip box */
+  .tip {
+    background: rgba(67,233,123,0.08);
+    border: 1px solid rgba(67,233,123,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .tip-icon { flex-shrink: 0; font-size: 18px; }
+  .tip p { margin: 0; color: var(--text); }
+  .tip strong { color: var(--accent3); }
+
+  /* Agent loop diagram */
+  .agent-loop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 24px 0;
+  }
+
+  .loop-node {
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 28px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .loop-node.n1 { border-color: var(--accent3); }
+  .loop-node.n2 { border-color: var(--accent); }
+  .loop-node.n3 { border-color: var(--accent4); }
+  .loop-node.n4 { border-color: var(--accent2); }
+  .loop-node.n5 { border-color: var(--accent3); }
+
+  .loop-node small {
+    display: block;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .loop-arrow {
+    font-size: 22px;
+    color: var(--muted);
+    line-height: 1;
+    padding: 6px 0;
+  }
+
+  .loop-back {
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    margin-top: 12px;
+    padding: 8px 20px;
+    border: 1px dashed rgba(108,99,255,0.4);
+    border-radius: 6px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  /* Multi agent diagram */
+  .multi-agent {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: center;
+    margin: 24px 0;
+  }
+
+  .agent-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .agent-box h4 {
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent4);
+    margin-bottom: 10px;
+  }
+
+  .agent-box .task {
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .task-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .td-progress { background: var(--accent4); }
+  .td-done { background: var(--accent3); }
+  .td-open { background: var(--muted); }
+
+  .shared-db {
+    background: rgba(108,99,255,0.1);
+    border: 1px solid rgba(108,99,255,0.4);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .shared-db small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 6px;
+    font-weight: 400;
+  }
+
+  .db-arrow {
+    font-size: 20px;
+    color: rgba(108,99,255,0.6);
+    text-align: center;
+  }
+
+  /* footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 40px 20px; }
+    .hero { padding: 40px 20px; }
+    .nav { padding: 12px 20px; }
+    .multi-agent { grid-template-columns: 1fr; }
+    .db-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">📿 Complete Usage Guide</div>
+  <h1>How to Use <span>Beads</span><br>In Your Projects</h1>
+  <p>From setup to multi-agent workflows — everything you need to know with examples, flowcharts, and real commands.</p>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="#setup">Setup</a>
+  <a href="#agent-loop">Agent Loop</a>
+  <a href="#solo">Solo Workflow</a>
+  <a href="#multi">Multi-Agent</a>
+  <a href="#commands">Commands</a>
+  <a href="#tips">Tips</a>
+</nav>
+
+<div class="container">
+
+  <!-- SECTION 1: WHAT IS THE SETUP -->
+  <div class="section" id="setup">
+    <div class="section-label">01 — Setup</div>
+    <h2>Setting Up Beads in a Project</h2>
+    <p>Each project gets its own Beads database. The setup is a one-time process per project.</p>
+
+    <div class="flowchart">
+      <div class="flow-title">Project Initialization Flow</div>
+      <div class="flow-row">
+        <div class="flow-node start">Start<small>new project</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node action">cd your-project<small>navigate to folder</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node action">bd init<small>creates .beads/</small></div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-node action">bd setup claude<small>or cursor / aider</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node action">git add .beads/<br>git commit<small>version control it</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node end">Ready!<small>agents can now use bd</small></div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="code-lang">bash — one-time setup</div>
+      </div>
+      <pre><span class="c-muted"># Step 1: Go to your project</span>
+<span class="c-green">cd</span> ~/projects/my-app
+
+<span class="c-muted"># Step 2: Initialize Beads (creates .beads/ folder)</span>
+<span class="c-green">bd init</span>
+
+<span class="c-muted"># Step 3: Connect to your AI agent (pick one)</span>
+<span class="c-green">bd setup claude</span>    <span class="c-muted"># Claude Code → writes CLAUDE.md</span>
+<span class="c-green">bd setup cursor</span>    <span class="c-muted"># Cursor IDE  → writes .cursor/rules/beads.mdc</span>
+<span class="c-green">bd setup aider</span>     <span class="c-muted"># Aider       → writes .aider.conf.yml</span>
+
+<span class="c-muted"># Step 4: Commit the database to git</span>
+<span class="c-green">git add</span> .beads/
+<span class="c-green">git commit</span> -m <span class="c-yellow">"Initialize beads issue tracker"</span>
+
+<span class="c-muted"># That's it! Verify it works:</span>
+<span class="c-green">bd status</span></pre>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <p><strong>Key idea:</strong> The <code>.beads/</code> folder lives inside your project and gets committed to git. This means every agent session — even on a different machine — can pick up right where it left off.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 2: THE AGENT LOOP -->
+  <div class="section" id="agent-loop">
+    <div class="section-label">02 — The Core Loop</div>
+    <h2>How the Agent Loop Works</h2>
+    <p>Once Beads is set up, your AI agent follows a tight, repeatable loop. It never needs to guess what to do next.</p>
+
+    <div class="agent-loop">
+      <div class="loop-node n1">🔍 Check for ready work<small>bd ready --json</small></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node n2">🎯 Claim the top-priority task<small>bd update &lt;id&gt; --claim --assignee agent-1</small></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node n3">⚙️ Do the work<small>write code, tests, docs…</small></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node n4">✅ Mark it done<small>bd update &lt;id&gt; --status closed</small></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node n5">🔄 Loop back — check for more<small>bd ready --json</small></div>
+      <div class="loop-back">↺ repeat until bd ready returns empty</div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="code-lang">bash — agent loop commands</div>
+      </div>
+      <pre><span class="c-muted"># Get all tasks with no blockers (ready to work)</span>
+<span class="c-green">bd ready</span> --json
+
+<span class="c-muted"># Claim a task (sets status → in_progress + assigns you)</span>
+<span class="c-green">bd update</span> <span class="c-purple">feat-a1b2</span> --claim --assignee <span class="c-yellow">agent-1</span>
+
+<span class="c-muted"># See full task details</span>
+<span class="c-green">bd show</span> <span class="c-purple">feat-a1b2</span>
+
+<span class="c-muted"># Add a comment/note as you work</span>
+<span class="c-green">bd comment</span> <span class="c-purple">feat-a1b2</span> <span class="c-yellow">"Implemented the login form, writing tests now"</span>
+
+<span class="c-muted"># Mark done</span>
+<span class="c-green">bd update</span> <span class="c-purple">feat-a1b2</span> --status closed
+
+<span class="c-muted"># Check again for next task</span>
+<span class="c-green">bd ready</span> --json</pre>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 3: SOLO WORKFLOW -->
+  <div class="section" id="solo">
+    <div class="section-label">03 — Solo Workflow</div>
+    <h2>You + One Agent</h2>
+    <p>The most common use case: you describe a feature, your agent breaks it into tasks and executes them.</p>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge badge-solo">Solo</span>
+        <span class="scenario-title">Example: Building a User Auth System</span>
+      </div>
+      <div class="scenario-body">
+        <ol class="steps">
+          <li>
+            <div class="step-content">
+              <h4>You create an Epic (high-level goal)</h4>
+              <p>An epic is the big goal. Tasks are the steps to get there.</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">bash</div>
+                </div>
+                <pre><span class="c-green">bd create</span> <span class="c-yellow">"User Authentication System"</span> \
+  -t epic \
+  -p 1 \
+  --description <span class="c-yellow">"Full auth with login, signup, JWT tokens, password reset"</span></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <h4>Agent breaks it into tasks with dependencies</h4>
+              <p>You tell your agent: "Read the epic and create subtasks for everything needed." The agent then files them with proper dependencies.</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">bash — what the agent runs</div>
+                </div>
+                <pre><span class="c-muted"># Agent creates tasks...</span>
+<span class="c-green">bd create</span> <span class="c-yellow">"Set up database schema for users"</span> -t task -p 1  <span class="c-muted"># → auth-001</span>
+<span class="c-green">bd create</span> <span class="c-yellow">"Build signup endpoint"</span> -t task -p 1             <span class="c-muted"># → auth-002</span>
+<span class="c-green">bd create</span> <span class="c-yellow">"Build login endpoint + JWT"</span> -t task -p 1          <span class="c-muted"># → auth-003</span>
+<span class="c-green">bd create</span> <span class="c-yellow">"Password reset flow"</span> -t task -p 2               <span class="c-muted"># → auth-004</span>
+<span class="c-green">bd create</span> <span class="c-yellow">"Write integration tests"</span> -t task -p 2            <span class="c-muted"># → auth-005</span>
+
+<span class="c-muted"># Agent sets dependencies (login needs DB first)</span>
+<span class="c-green">bd dep add</span> auth-002 --blocks auth-001  <span class="c-muted"># signup blocked by DB</span>
+<span class="c-green">bd dep add</span> auth-003 --blocks auth-001  <span class="c-muted"># login blocked by DB</span>
+<span class="c-green">bd dep add</span> auth-005 --blocks auth-003  <span class="c-muted"># tests blocked by login</span></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <h4>Agent executes in dependency order</h4>
+              <p><code>bd ready</code> automatically returns only tasks whose blockers are done — so the agent always does things in the right order.</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">bash</div>
+                </div>
+                <pre><span class="c-green">bd ready</span>
+<span class="c-muted"># Returns: auth-001 "Set up database schema" ← only unblocked task</span>
+
+<span class="c-muted"># Agent does the work, then closes it</span>
+<span class="c-green">bd update</span> auth-001 --status closed
+
+<span class="c-green">bd ready</span>
+<span class="c-muted"># Now returns: auth-002, auth-003 ← both unblocked now</span></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <h4>You check in whenever you want</h4>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">bash</div>
+                </div>
+                <pre><span class="c-green">bd list</span>              <span class="c-muted"># See all tasks + status</span>
+<span class="c-green">bd status</span>            <span class="c-muted"># Summary: open/in-progress/done counts</span>
+<span class="c-green">bd dep tree</span> auth-001 <span class="c-muted"># Visualize dependency graph</span></pre>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 4: MULTI-AGENT -->
+  <div class="section" id="multi">
+    <div class="section-label">04 — Multi-Agent Workflow</div>
+    <h2>Multiple Agents, One Shared Database</h2>
+    <p>This is where Beads really shines. Multiple agents work in parallel, each claiming different tasks, with zero conflicts.</p>
+
+    <div class="multi-agent">
+      <div class="agent-box">
+        <h4>🤖 Agent 1 — Frontend</h4>
+        <div class="task"><div class="task-dot td-done"></div> Build login form</div>
+        <div class="task"><div class="task-dot td-progress"></div> Add form validation</div>
+        <div class="task"><div class="task-dot td-open"></div> Write UI tests</div>
+      </div>
+      <div>
+        <div class="shared-db">📿 .beads/<br>Shared DB<small>via git / BEADS_DIR</small></div>
+        <div class="db-arrow">↔</div>
+      </div>
+      <div class="agent-box">
+        <h4>🤖 Agent 2 — Backend</h4>
+        <div class="task"><div class="task-dot td-done"></div> Set up DB schema</div>
+        <div class="task"><div class="task-dot td-progress"></div> Build auth endpoints</div>
+        <div class="task"><div class="task-dot td-open"></div> Add rate limiting</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="code-lang">bash — multi-agent setup</div>
+      </div>
+      <pre><span class="c-muted"># Both agents use the same project's .beads/ via git</span>
+<span class="c-muted"># Agent 1 terminal:</span>
+<span class="c-green">cd</span> ~/my-app
+<span class="c-green">bd ready</span> --json
+<span class="c-green">bd update</span> feat-001 --claim --assignee <span class="c-yellow">agent-frontend</span>
+
+<span class="c-muted"># Agent 2 terminal (same project, different terminal):</span>
+<span class="c-green">cd</span> ~/my-app
+<span class="c-green">bd ready</span> --json
+<span class="c-muted"># feat-001 is already claimed → won't be returned</span>
+<span class="c-muted"># Agent 2 automatically gets feat-002 instead</span>
+<span class="c-green">bd update</span> feat-002 --claim --assignee <span class="c-yellow">agent-backend</span>
+
+<span class="c-muted"># See what each agent is working on</span>
+<span class="c-green">bd list</span> --assignee agent-frontend
+<span class="c-green">bd list</span> --assignee agent-backend</pre>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">⚡</div>
+      <p><strong>How conflicts are avoided:</strong> The <code>--claim</code> flag is atomic — it sets <code>status: in_progress</code> and <code>assignee</code> in a single operation. So two agents can never claim the same task simultaneously.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 5: FULL LIFECYCLE FLOWCHART -->
+  <div class="section">
+    <div class="section-label">05 — Full Lifecycle</div>
+    <h2>Complete Project Flowchart</h2>
+
+    <div class="flowchart">
+      <div class="flow-title">Full Beads Lifecycle — From Idea to Done</div>
+
+      <div class="flow-row">
+        <div class="flow-node start">💬 You have an idea<small>describe it in plain English</small></div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-node action">bd create "Epic"<small>-t epic -p 1 --description</small></div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-node agent">Agent decomposes epic<small>creates tasks + dependencies</small></div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-node action">bd ready --json<small>get unblocked tasks</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node decision">Tasks<br>available?<small>yes or no</small></div>
+      </div>
+      <div class="flow-arrow down">↓ yes</div>
+      <div class="flow-row">
+        <div class="flow-node agent">bd update --claim<small>agent claims task</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node agent">Agent does work<small>code, tests, docs</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node action">bd update --status closed<small>mark done</small></div>
+      </div>
+      <div class="flow-arrow down">↓ loop back</div>
+      <div class="flow-row">
+        <div class="flow-node end">🎉 All tasks closed<small>project complete</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 6: COMMAND REFERENCE -->
+  <div class="section" id="commands">
+    <div class="section-label">06 — Command Reference</div>
+    <h2>Essential Commands Cheatsheet</h2>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 24px 0;">
+      <table class="cmd-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>bd init</code></td><td>Initialize Beads in current project</td></tr>
+          <tr><td><code>bd setup claude</code></td><td>Connect to Claude Code (writes CLAUDE.md)</td></tr>
+          <tr><td><code>bd create "Title" -t task -p 1</code></td><td>Create a task (types: task, epic, bug, feature)</td></tr>
+          <tr><td><code>bd ready --json</code></td><td>List all tasks with no open blockers</td></tr>
+          <tr><td><code>bd list</code></td><td>List all tasks</td></tr>
+          <tr><td><code>bd list --status open</code></td><td>Filter by status (open, in_progress, closed)</td></tr>
+          <tr><td><code>bd show &lt;id&gt;</code></td><td>Full details of a task</td></tr>
+          <tr><td><code>bd update &lt;id&gt; --claim --assignee name</code></td><td>Atomically claim a task</td></tr>
+          <tr><td><code>bd update &lt;id&gt; --status closed</code></td><td>Mark task done</td></tr>
+          <tr><td><code>bd dep add &lt;id&gt; --blocks &lt;id&gt;</code></td><td>Set dependency: A blocks B</td></tr>
+          <tr><td><code>bd dep tree &lt;id&gt;</code></td><td>Visualize dependency graph</td></tr>
+          <tr><td><code>bd comment &lt;id&gt; "note"</code></td><td>Add a comment to a task</td></tr>
+          <tr><td><code>bd status</code></td><td>Overall project status summary</td></tr>
+          <tr><td><code>bd doctor --fix</code></td><td>Diagnose and auto-fix issues</td></tr>
+          <tr><td><code>bd admin compact --days 30</code></td><td>Summarize old closed tasks to save space</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TIPS -->
+  <div class="section" id="tips">
+    <div class="section-label">07 — Tips</div>
+    <h2>Best Practices</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🏷️</div>
+        <h3>Use short prefixes</h3>
+        <p>When initializing, use a short prefix like <code>auth-</code> or <code>ui-</code> to keep IDs readable: <code>bd init --prefix auth</code></p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📏</div>
+        <h3>Keep issues small</h3>
+        <p>Aim for under 200 open issues per project. Run <code>bd admin compact --days 30</code> every few days to summarize old closed tasks.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔁</div>
+        <h3>Run bd doctor daily</h3>
+        <p>Especially after git merges. Run <code>bd doctor --fix</code> to catch and fix any database inconsistencies.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h3>Always commit .beads/</h3>
+        <p>After every session, run <code>git add .beads/ && git commit -m "Update beads"</code> so nothing is lost between sessions.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Epics first, tasks second</h3>
+        <p>Create the epic with a detailed description, then let your agent decompose it into tasks. Better planning = fewer orphaned tasks.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👁️</div>
+        <h3>bd list is your dashboard</h3>
+        <p>Run <code>bd list</code> at the start of every session to re-orient yourself before giving any instructions to your agent.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  beads v0.59.0 — github.com/steveyegge/beads
+</div>
+
+</body>
+</html>
