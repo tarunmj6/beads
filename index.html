@@ -587,6 +587,502 @@
     .multi-agent { grid-template-columns: 1fr; }
     .db-arrow { transform: rotate(90deg); }
   }
+
+  /* ===== EPIC TRACKER ===== */
+  #tracker-panel {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+  }
+
+  .tracker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .tracker-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent3);
+    box-shadow: 0 0 6px var(--accent3);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .tracker-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    background: transparent;
+  }
+
+  .btn-primary {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn-primary:hover { background: rgba(108,99,255,0.15); }
+
+  .btn-green {
+    border-color: var(--accent3);
+    color: var(--accent3);
+  }
+  .btn-green:hover { background: rgba(67,233,123,0.1); }
+
+  .btn-orange {
+    border-color: var(--accent4);
+    color: var(--accent4);
+  }
+  .btn-orange:hover { background: rgba(247,151,30,0.1); }
+
+  .btn-red {
+    border-color: var(--accent2);
+    color: var(--accent2);
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+  .btn-red:hover { background: rgba(255,101,132,0.1); }
+
+  .btn-small {
+    font-size: 10px;
+    padding: 3px 10px;
+  }
+
+  .tracker-body {
+    padding: 24px 40px;
+    display: none;
+  }
+
+  .tracker-body.open { display: block; }
+
+  .tracker-toggle {
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    border-top: 1px solid var(--border);
+    transition: color 0.2s;
+    user-select: none;
+  }
+  .tracker-toggle:hover { color: var(--accent); }
+
+  /* Summary bar */
+  .summary-bar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .summary-stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .summary-stat .num {
+    font-size: 24px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+  }
+  .summary-stat .lbl {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+  .stat-done .num { color: var(--accent3); }
+  .stat-progress .num { color: var(--accent4); }
+  .stat-open .num { color: var(--muted); }
+  .stat-epics .num { color: var(--accent); }
+
+  /* Overall progress */
+  .overall-progress {
+    margin-bottom: 24px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .progress-bar-wrap {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  /* Epic cards */
+  .epics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .epic-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .epic-card:hover { border-color: rgba(108,99,255,0.3); }
+  .epic-card.all-done { border-color: rgba(67,233,123,0.3); }
+
+  .epic-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .epic-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    background: rgba(108,99,255,0.1);
+    border: 1px solid rgba(108,99,255,0.2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .epic-name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .epic-progress-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .mini-bar {
+    width: 80px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .mini-bar-fill {
+    height: 100%;
+    background: var(--accent3);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .epic-expand-btn {
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .epic-card.expanded .epic-expand-btn { transform: rotate(180deg); }
+
+  /* Tasks inside epic */
+  .epic-tasks {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 8px 16px 12px;
+  }
+  .epic-card.expanded .epic-tasks { display: block; }
+
+  .task-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+  }
+  .task-row:last-child { border-bottom: none; }
+
+  .task-check {
+    width: 16px; height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    font-size: 10px;
+  }
+  .task-check.done {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: #000;
+  }
+  .task-check.in-progress {
+    background: var(--accent4);
+    border-color: var(--accent4);
+    color: #000;
+  }
+
+  .task-name {
+    flex: 1;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+  .task-name.done {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+
+  .task-status-badge {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-open { background: rgba(136,136,153,0.15); color: var(--muted); }
+  .badge-inprogress { background: rgba(247,151,30,0.15); color: var(--accent4); }
+  .badge-done { background: rgba(67,233,123,0.15); color: var(--accent3); }
+
+  .task-cycle-btn {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.15s;
+  }
+  .task-cycle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Add forms */
+  .add-form {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .add-form.open { display: flex; }
+
+  .add-form input, .add-form select {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .add-form input:focus, .add-form select:focus {
+    border-color: var(--accent);
+  }
+  .add-form input.inp-main { flex: 1; min-width: 200px; }
+  .add-form select option { background: #1a1a26; }
+
+  /* AI Update box */
+  .ai-update-box {
+    background: rgba(108,99,255,0.05);
+    border: 1px solid rgba(108,99,255,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    min-height: 50px;
+    position: relative;
+  }
+  .ai-update-box .ai-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ai-update-box .ai-text {
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .ai-spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(108,99,255,0.3);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .add-task-to-epic {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+  }
+  .add-task-to-epic input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 10px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    outline: none;
+  }
+  .add-task-to-epic input:focus { border-color: var(--accent); }
+
+  .empty-state {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 32px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .tab-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .prompt-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .prompt-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .prompt-tag {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .prompt-card-body {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .prompt-text {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-top: 10px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .copy-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { border-color: var(--accent3); color: var(--accent3); }
+
+  @media (max-width: 600px) {
+    .tracker-header, .tracker-body { padding-left: 20px; padding-right: 20px; }
+    .summary-bar { gap: 10px; }
+    #import-how { padding: 10px 20px; }
+  }
 </style>
 </head>
 <body>
@@ -606,9 +1102,123 @@
   <a href="#multi">Multi-Agent</a>
   <a href="#superpowers">Superpowers</a>
   <a href="#interrupt">Interrupt & Discuss</a>
+  <a href="#tracking">Progress Tracking</a>
   <a href="#commands">Commands</a>
   <a href="#tips">Tips</a>
 </nav>
+
+<!-- EPIC TRACKER PANEL -->
+<div id="tracker-panel">
+  <div class="tracker-header">
+    <div class="tracker-title">
+      <div class="live-dot"></div>
+      📿 Epic Tracker — Live Beads Progress
+    </div>
+    <div class="tracker-actions">
+      <button class="btn btn-primary" onclick="showImport()">⬆ Import from bd</button>
+      <button class="btn btn-primary" onclick="toggleAddEpic()">+ Add Manually</button>
+      <button class="btn btn-orange" onclick="getAIUpdate()">🤖 AI Status Update</button>
+      <button class="btn btn-green" onclick="resetDemo()">↺ Demo Data</button>
+    </div>
+  </div>
+
+  <!-- How to import banner -->
+  <div id="import-how" style="background:rgba(108,99,255,0.07);border-bottom:1px solid var(--border);padding:10px 40px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <span style="color:var(--accent)">HOW TO IMPORT REAL DATA:</span>
+    <span>1. Run <code style="color:var(--accent3)">bd list --json</code> in your terminal</span>
+    <span>→</span>
+    <span>2. Copy the output</span>
+    <span>→</span>
+    <span>3. Click <strong style="color:var(--accent)">"⬆ Import from bd"</strong> and paste</span>
+    <button class="btn btn-red" style="margin-left:auto" onclick="document.getElementById('import-how').style.display='none'">✕</button>
+  </div>
+
+  <!-- Import modal -->
+  <div id="import-modal" style="display:none;background:var(--surface2);border-bottom:1px solid var(--border);padding:20px 40px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">
+      Paste output of: <code style="color:var(--accent3)">bd list --json</code>
+    </div>
+    <textarea id="import-json" placeholder='[{"id":"auth-001","title":"Set up DB schema","status":"closed","type":"task","parent_id":"auth-epic"},...]'
+      style="width:100%;height:120px;background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;resize:vertical;"></textarea>
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+      <button class="btn btn-green" onclick="importFromBd()">Import</button>
+      <button class="btn btn-red" onclick="document.getElementById('import-modal').style.display='none'">Cancel</button>
+      <span style="color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;">Tasks without a parent_id will form their own group.</span>
+    </div>
+    <div id="import-error" style="color:var(--accent2);font-size:12px;font-family:'JetBrains Mono',monospace;margin-top:8px;display:none;"></div>
+  </div>
+
+  <!-- Add epic form -->
+  <div id="add-epic-form" style="display:none;background:var(--surface2);border-bottom:1px solid var(--border);padding:16px 40px;gap:10px;flex-wrap:wrap;align-items:center;">
+    <input id="epic-name-input" class="inp-main" placeholder="Epic name (e.g. Redis Caching Layer)" style="flex:1;min-width:200px;background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:7px 12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;" />
+    <input id="epic-prefix-input" placeholder="prefix (cache)" style="width:110px;background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:7px 12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;" />
+    <select id="epic-priority" style="background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:7px 12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;">
+      <option value="0">P0 Critical</option>
+      <option value="1" selected>P1 High</option>
+      <option value="2">P2 Medium</option>
+      <option value="3">P3 Low</option>
+    </select>
+    <button class="btn btn-green" onclick="addEpic()">Create Epic</button>
+    <button class="btn btn-red" onclick="toggleAddEpic()">Cancel</button>
+  </div>
+
+  <div class="tracker-body open" id="tracker-body">
+
+    <!-- Tabs: Tracker | Agent Prompts -->
+    <div style="display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--border);">
+      <button class="tab-btn active" id="tab-tracker" onclick="switchTab('tracker')">📊 Epic Tracker</button>
+      <button class="tab-btn" id="tab-prompts" onclick="switchTab('prompts')">💬 Agent Prompts</button>
+    </div>
+
+    <!-- TAB: TRACKER -->
+    <div id="pane-tracker">
+      <div class="summary-bar">
+        <div class="summary-stat stat-epics"><div class="num" id="stat-epics">0</div><div class="lbl">Epics</div></div>
+        <div class="summary-stat stat-done"><div class="num" id="stat-done">0</div><div class="lbl">Done</div></div>
+        <div class="summary-stat stat-progress"><div class="num" id="stat-progress">0</div><div class="lbl">In Progress</div></div>
+        <div class="summary-stat stat-open"><div class="num" id="stat-open">0</div><div class="lbl">Open</div></div>
+        <div class="summary-stat" style="margin-left:auto;min-width:auto;background:transparent;border:none;padding:0;">
+          <div class="num" id="pct-label" style="font-size:32px;color:var(--accent)">0%</div>
+          <div class="lbl">Complete</div>
+        </div>
+      </div>
+
+      <div class="overall-progress" style="margin-bottom:24px;">
+        <div class="progress-label">
+          <span>Overall Completion</span>
+          <span id="pct-label2">0 of 0 tasks done</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="main-progress" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="epics-grid" id="epics-list">
+        <div class="empty-state">No epics yet.<br><br>Run <code style="color:var(--accent3)">bd list --json</code> in your terminal, then click <strong style="color:var(--accent)">⬆ Import from bd</strong><br>— or click <strong style="color:var(--accent)">↺ Demo Data</strong> to see an example.</div>
+      </div>
+
+      <div class="ai-update-box" id="ai-box" style="display:none;margin-top:16px;">
+        <div class="ai-label">
+          <div class="ai-spinner" id="ai-spinner"></div>
+          ✦ AI Status Update
+        </div>
+        <div class="ai-text" id="ai-text"></div>
+      </div>
+    </div>
+
+    <!-- TAB: AGENT PROMPTS -->
+    <div id="pane-prompts" style="display:none;">
+      <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">Copy these prompts and paste them directly into Claude Code, Cursor, or any coding agent to get structured live updates on your Beads tasks.</p>
+
+      <div id="prompts-list"></div>
+    </div>
+
+  </div>
+
+  <div class="tracker-toggle" onclick="toggleTracker()">
+    <span id="toggle-label">▲ Collapse Tracker</span>
+  </div>
+</div>
 
 <div class="container">
 
@@ -1261,9 +1871,199 @@ EOF
 
   <div class="divider"></div>
 
+  <!-- SECTION 9: FREQUENT UPDATES + EPIC TRACKER -->
+  <div class="section" id="tracking">
+    <div class="section-label">09 — Progress Tracking</div>
+    <h2>Frequent Updates &amp; Epic Progress Tracker</h2>
+    <p>Beads makes it easy to check on your agents at any time — and to see exactly how far along each epic is.</p>
+
+    <!-- Update commands -->
+    <h3 style="font-size: 20px; margin: 32px 0 12px; font-weight: 700;">Getting Frequent Updates</h3>
+    <p>You can ask your agent to report back after every task, or just check yourself anytime with these commands.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="code-lang">bash — check progress anytime</div>
+      </div>
+      <pre><span class="c-muted"># Quick overall summary</span>
+<span class="c-green">bd status</span>
+<span class="c-muted"># Output:
+#   Total: 12  Open: 6  In Progress: 2  Blocked: 1  Closed: 3</span>
+
+<span class="c-muted"># See what agents are actively working on right now</span>
+<span class="c-green">bd list</span> --status in_progress
+
+<span class="c-muted"># See all tasks closed today (what got done)</span>
+<span class="c-green">bd list</span> --status closed --since 24h
+
+<span class="c-muted"># See what's blocked and why</span>
+<span class="c-green">bd list</span> --status blocked
+
+<span class="c-muted"># Epic-specific progress</span>
+<span class="c-green">bd epic status</span> cache-001
+<span class="c-muted"># Output:
+#   Epic: Redis Caching Layer (cache-001)
+#   Progress: 3/5 tasks closed (60%)
+#   In Progress: cache-004
+#   Remaining: cache-005</span>
+
+<span class="c-muted"># Watch all epics at once</span>
+<span class="c-green">bd list</span> --type epic</pre>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">🔔</div>
+      <p><strong>Tip: Ask your agent to report after each task.</strong> Add this to your CLAUDE.md / AGENTS.md: <code>"After closing each task, summarize what was done in one sentence and show bd status."</code> This gives you a live progress feed without interrupting the agent's loop.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="code-lang">CLAUDE.md — add to get automatic updates</div>
+      </div>
+      <pre><span class="c-muted">## Beads Reporting</span>
+<span class="c-white">After closing each task:</span>
+<span class="c-white">1. Run `bd status` and show the output</span>
+<span class="c-white">2. Say in one sentence what was just completed</span>
+<span class="c-white">3. Say what the next task will be before claiming it</span>
+<span class="c-white">4. Wait for human approval if the next task is P0</span></pre>
+    </div>
+
+    <!-- Epic Tracker -->
+    <h3 style="font-size: 20px; margin: 40px 0 12px; font-weight: 700;">Epic Progress Tracker — Visual Example</h3>
+    <p>Here's what your epics look like in the terminal, and how to read the output.</p>
+
+    <!-- Mock epic tracker UI -->
+    <div style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 13px;">
+      <div style="background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;">
+        <span style="color: var(--muted); font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">bd list --type epic — live output</span>
+        <div style="display: flex; gap: 6px;"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+      </div>
+      <div style="padding: 24px; line-height: 2;">
+
+        <!-- Epic 1 -->
+        <div style="margin-bottom: 28px;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <span style="color: var(--accent4); font-weight: 700;">cache-001</span>
+            <span style="color: var(--text);">Redis Caching Layer</span>
+            <span style="background: rgba(247,151,30,0.15); color: var(--accent4); padding: 2px 8px; border-radius: 4px; font-size: 11px;">P1 · epic</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+            <div style="flex: 1; background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; max-width: 300px;">
+              <div style="width: 60%; height: 100%; background: linear-gradient(90deg, var(--accent3), #2ecc71); border-radius: 4px;"></div>
+            </div>
+            <span style="color: var(--accent3); font-weight: 700;">3 / 5</span>
+            <span style="color: var(--muted);">60%</span>
+          </div>
+          <div style="padding-left: 16px; border-left: 2px solid var(--border); margin-top: 8px;">
+            <div style="color: var(--accent3);">✓ cache-002  Add ioredis dependency</div>
+            <div style="color: var(--accent3);">✓ cache-003  Create redis.ts service</div>
+            <div style="color: var(--accent3);">✓ cache-004  Replace SessionStore</div>
+            <div style="color: var(--accent4);">⚡ cache-005  Integration tests  <span style="color: var(--muted);">[in_progress · agent-1]</span></div>
+            <div style="color: var(--muted);">○ cache-006  Add Redis to Docker Compose  <span style="color: var(--border);">[blocked by cache-005]</span></div>
+          </div>
+        </div>
+
+        <!-- Epic 2 -->
+        <div style="margin-bottom: 28px;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <span style="color: var(--accent4); font-weight: 700;">auth-001</span>
+            <span style="color: var(--text);">User Authentication System</span>
+            <span style="background: rgba(255,101,132,0.15); color: var(--accent2); padding: 2px 8px; border-radius: 4px; font-size: 11px;">P0 · epic</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+            <div style="flex: 1; background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; max-width: 300px;">
+              <div style="width: 100%; height: 100%; background: linear-gradient(90deg, var(--accent3), #2ecc71); border-radius: 4px;"></div>
+            </div>
+            <span style="color: var(--accent3); font-weight: 700;">4 / 4</span>
+            <span style="color: var(--accent3);">✓ Done</span>
+          </div>
+          <div style="padding-left: 16px; border-left: 2px solid var(--border); margin-top: 8px;">
+            <div style="color: var(--accent3);">✓ auth-002  DB schema for users</div>
+            <div style="color: var(--accent3);">✓ auth-003  Signup endpoint</div>
+            <div style="color: var(--accent3);">✓ auth-004  Login endpoint + JWT</div>
+            <div style="color: var(--accent3);">✓ auth-005  Integration tests</div>
+          </div>
+        </div>
+
+        <!-- Epic 3 -->
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <span style="color: var(--accent4); font-weight: 700;">ui-001</span>
+            <span style="color: var(--text);">Dashboard Redesign</span>
+            <span style="background: rgba(108,99,255,0.15); color: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 11px;">P2 · epic</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+            <div style="flex: 1; background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; max-width: 300px;">
+              <div style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent3), #2ecc71); border-radius: 4px;"></div>
+            </div>
+            <span style="color: var(--muted); font-weight: 700;">0 / 6</span>
+            <span style="color: var(--muted);">not started</span>
+          </div>
+          <div style="padding-left: 16px; border-left: 2px solid var(--border); margin-top: 8px; color: var(--muted);">
+            <div>○ ui-002  Wireframe layout components</div>
+            <div>○ ui-003  Build nav sidebar</div>
+            <div>○ ui-004  Charts &amp; data visualisation</div>
+            <div style="color: var(--border);">+ 3 more tasks…</div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid var(--border); margin-top: 24px; padding-top: 16px; color: var(--muted); font-size: 12px; display: flex; gap: 24px;">
+          <span>📿 3 epics</span>
+          <span style="color: var(--accent3);">✓ 7 closed</span>
+          <span style="color: var(--accent4);">⚡ 1 in progress</span>
+          <span>○ 8 open</span>
+          <span style="color: var(--border);">⊘ 1 blocked</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="code-lang">bash — epic tracking commands</div>
+      </div>
+      <pre><span class="c-muted"># Progress of a specific epic (count + % complete)</span>
+<span class="c-green">bd epic status</span> cache-001
+
+<span class="c-muted"># All tasks under an epic</span>
+<span class="c-green">bd list</span> --parent cache-001
+
+<span class="c-muted"># How many done vs total (pipe to count)</span>
+<span class="c-green">bd list</span> --parent cache-001 --status closed --json | jq length
+<span class="c-green">bd list</span> --parent cache-001 --json | jq length
+
+<span class="c-muted"># Ask agent to give you a % update on everything</span>
+<span class="c-muted"># Just type this in Claude Code:</span>
+<span class="c-yellow">"Run bd epic status on all open epics and give me
+a one-line progress summary for each one."</span></pre>
+    </div>
+
+    <div class="cards" style="margin-top: 24px;">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>After every session</h3>
+        <p>Run <code>bd status</code> + <code>bd list --type epic</code> to see your overall progress snapshot before ending the session.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Live monitoring</h3>
+        <p>In a second terminal, run <code>watch -n5 bd status</code> to see counts update every 5 seconds as the agent works.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Ask for a report</h3>
+        <p>Tell your agent: <em>"Give me a progress report — for each epic, how many tasks are closed vs total?"</em> It will query Beads and summarize.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
   <!-- TIPS -->
   <div class="section" id="tips">
-    <div class="section-label">09 — Tips</div>
+    <div class="section-label">10 — Tips</div>
     <h2>Best Practices</h2>
 
     <div class="cards">
@@ -1306,5 +2106,526 @@ EOF
   beads v0.59.0 — github.com/steveyegge/beads
 </div>
 
+<script>
+// ===== STATE =====
+let epics = [];
+let nextManualId = 100;
+let trackerOpen = true;
+let addEpicOpen = false;
+let currentTab = 'tracker';
+
+// ===== AGENT PROMPTS =====
+const AGENT_PROMPTS = [
+  {
+    tag: 'Status Update', tagColor: 'rgba(108,99,255,0.2)', tagTextColor: '#6c63ff',
+    title: 'Full project status update',
+    desc: 'Ask your agent to run bd commands and give you a structured summary of all epics and tasks.',
+    text: `Run the following bd commands and give me a structured status update:
+
+bd status
+bd list --json
+
+Then tell me:
+1. How many tasks are open, in progress, and closed across all epics
+2. Which epic has the most remaining work
+3. What the top 3 ready-to-work tasks are (bd ready)
+4. Any tasks that are blocked and what's blocking them
+
+Format your response as a clear, brief summary — no walls of text.`
+  },
+  {
+    tag: 'Live Update', tagColor: 'rgba(67,233,123,0.15)', tagTextColor: '#43e97b',
+    title: 'Quick "what are you working on right now" check-in',
+    desc: 'Short prompt to get a one-paragraph update mid-session without breaking the agent\'s flow.',
+    text: `Quick check-in — without stopping your current work:
+Run: bd list --status in_progress --json
+
+Then in one paragraph, tell me:
+- Which task(s) you are currently working on
+- What you have done so far on them
+- What you plan to do next
+
+Keep it under 5 sentences. Then continue.`
+  },
+  {
+    tag: 'Epic Deep-Dive', tagColor: 'rgba(247,151,30,0.15)', tagTextColor: '#f7971e',
+    title: 'Deep dive into a specific epic',
+    desc: 'Get a full breakdown of one epic — what\'s done, what\'s blocked, and what to do next.',
+    text: `Give me a full status breakdown of the epic: [EPIC_ID]
+
+Run these commands:
+bd show [EPIC_ID]
+bd list --parent [EPIC_ID] --json
+bd dep tree [EPIC_ID]
+
+Then tell me:
+1. Total progress (X of Y tasks done)
+2. What tasks are closed
+3. What tasks are in progress and who owns them
+4. What tasks are blocked and what's blocking them
+5. What the next 2-3 tasks to work on are in priority order
+6. Any risks or things I should know about
+
+Replace [EPIC_ID] with the actual epic ID before sending.`
+  },
+  {
+    tag: 'Blocker Check', tagColor: 'rgba(255,101,132,0.15)', tagTextColor: '#ff6584',
+    title: 'Find everything that is blocked',
+    desc: 'Identify all blocked tasks across the whole project and what would unblock them.',
+    text: `Check for all blocked or stalled tasks across the project:
+
+bd list --status blocked --json
+bd list --status in_progress --json
+
+For each blocked task, tell me:
+- What is blocked
+- Why it is blocked (what dependency is unresolved)
+- What action would unblock it (a decision, a completed task, a human approval)
+
+Also look at in_progress tasks and flag any that have been sitting for a long time without comments.
+Summarize in a short table-style format.`
+  },
+  {
+    tag: 'Interrupt', tagColor: 'rgba(255,101,132,0.2)', tagTextColor: '#ff6584',
+    title: 'Pause current task and redirect',
+    desc: 'Use this when you want to stop an agent and change course on a specific task.',
+    text: `Stop what you are doing on [TASK_ID].
+
+Run: bd update [TASK_ID] --status open
+
+Then add this comment explaining the redirect:
+bd comment [TASK_ID] "[YOUR_NOTE_HERE — describe what changed and what the new approach should be]"
+
+Then update the description with the corrected plan:
+bd update [TASK_ID] --description "[NEW_DESCRIPTION]"
+
+Then check bd ready --json and tell me what the next available task is.
+
+Replace [TASK_ID] and the comments with actual values before sending.`
+  },
+  {
+    tag: 'Handoff', tagColor: 'rgba(108,99,255,0.2)', tagTextColor: '#6c63ff',
+    title: 'Hand off a task to a new agent session',
+    desc: 'Use at the end of a session so the next agent picks up with full context.',
+    text: `Before this session ends, prepare a full handoff on your current task:
+
+1. Run: bd list --status in_progress --json
+2. For each in-progress task, add a handoff comment:
+   bd comment [TASK_ID] "HANDOFF: [summarize what was done, what files were changed, what is left to do, and any gotchas the next agent should know]"
+
+3. If you did not finish the task, leave it as in_progress.
+   If you finished it, close it: bd update [TASK_ID] --status closed
+
+4. Run: bd sync
+5. Tell me: what is the state of the project and what should the next session start with?`
+  },
+  {
+    tag: 'Session Start', tagColor: 'rgba(67,233,123,0.15)', tagTextColor: '#43e97b',
+    title: 'Orient yourself at the start of a new session',
+    desc: 'Put this in your CLAUDE.md or paste it at the start of every session.',
+    text: `You are starting a new session on this project. Begin by orienting yourself:
+
+1. Run: bd status
+2. Run: bd ready --json
+3. Run: bd list --status in_progress --json
+
+Then tell me in 3-4 sentences:
+- The overall state of the project (% done, any epics nearly complete)
+- What was in progress last session (check in_progress tasks and their comments)
+- What you recommend starting with today
+
+After your summary, pick the highest-priority ready task and claim it:
+bd update [TASK_ID] --claim --assignee claude`
+  },
+  {
+    tag: 'Session End', tagColor: 'rgba(136,136,153,0.2)', tagTextColor: '#888899',
+    title: 'Wrap up and commit at end of session',
+    desc: 'Run at the end of every session to ensure nothing is lost.',
+    text: `This session is ending. Do the following to close out cleanly:
+
+1. For any in_progress task you completed:
+   bd update [TASK_ID] --status closed
+
+2. For any in_progress task you did NOT finish:
+   bd comment [TASK_ID] "Session end: [what you did, what is left]"
+
+3. Commit the beads database:
+   git add .beads/
+   git commit -m "beads: session update $(date +%Y-%m-%d)"
+
+4. Run: bd status
+   Tell me the final summary — what was accomplished this session and what is left for next time.`
+  }
+];
+
+// ===== DEMO DATA =====
+function resetDemo() {
+  epics = [
+    {
+      id: 'epic-1', name: 'User Authentication', prefix: 'auth', priority: 1,
+      tasks: [
+        { id: 'auth-001', name: 'Set up database schema for users', status: 'done' },
+        { id: 'auth-002', name: 'Build signup endpoint', status: 'done' },
+        { id: 'auth-003', name: 'Build login endpoint + JWT', status: 'in-progress' },
+        { id: 'auth-004', name: 'Password reset flow', status: 'open' },
+        { id: 'auth-005', name: 'Write integration tests', status: 'open' },
+      ], expanded: true
+    },
+    {
+      id: 'epic-2', name: 'Redis Caching Layer', prefix: 'cache', priority: 1,
+      tasks: [
+        { id: 'cache-001', name: 'Add ioredis dependency', status: 'done' },
+        { id: 'cache-002', name: 'Create redis.ts cache service', status: 'in-progress' },
+        { id: 'cache-003', name: 'Replace SessionStore with RedisSessionStore', status: 'open' },
+        { id: 'cache-004', name: 'Integration tests (real Redis)', status: 'open' },
+        { id: 'cache-005', name: 'Add Redis to Docker Compose', status: 'open' },
+      ], expanded: false
+    },
+    {
+      id: 'epic-3', name: 'Frontend Dashboard', prefix: 'dash', priority: 2,
+      tasks: [
+        { id: 'dash-001', name: 'Scaffold React app with Vite', status: 'done' },
+        { id: 'dash-002', name: 'Build navigation component', status: 'done' },
+        { id: 'dash-003', name: 'User profile page', status: 'done' },
+        { id: 'dash-004', name: 'Settings page', status: 'done' },
+      ], expanded: false
+    }
+  ];
+  renderTracker();
+}
+
+// ===== IMPORT FROM bd list --json =====
+function showImport() {
+  const m = document.getElementById('import-modal');
+  m.style.display = m.style.display === 'none' ? 'block' : 'none';
+  document.getElementById('import-error').style.display = 'none';
+}
+
+function importFromBd() {
+  const raw = document.getElementById('import-json').value.trim();
+  const errEl = document.getElementById('import-error');
+  errEl.style.display = 'none';
+
+  let items;
+  try { items = JSON.parse(raw); }
+  catch(e) { errEl.textContent = 'Invalid JSON. Make sure you copied the full output of bd list --json'; errEl.style.display = 'block'; return; }
+
+  if (!Array.isArray(items)) { errEl.textContent = 'Expected a JSON array from bd list --json'; errEl.style.display = 'block'; return; }
+
+  // Group by epic/parent
+  const epicMap = {};
+  const orphanTasks = [];
+
+  items.forEach(item => {
+    const type = (item.type || '').toLowerCase();
+    const status = normalizeStatus(item.status || item.state || 'open');
+
+    if (type === 'epic' || (!item.parent_id && !item.parentId)) {
+      const id = item.id || item.bd_id || ('imported-' + Math.random().toString(36).slice(2,6));
+      if (type === 'epic') {
+        epicMap[id] = { id, name: item.title || item.name || id, prefix: id.split('-')[0], priority: item.priority || 1, tasks: [], expanded: true };
+      }
+    }
+  });
+
+  items.forEach(item => {
+    const type = (item.type || '').toLowerCase();
+    if (type === 'epic') return;
+    const id = item.id || item.bd_id || ('t-' + Math.random().toString(36).slice(2,6));
+    const parentId = item.parent_id || item.parentId;
+    const status = normalizeStatus(item.status || item.state || 'open');
+    const task = { id, name: item.title || item.name || id, status };
+
+    if (parentId && epicMap[parentId]) {
+      epicMap[parentId].tasks.push(task);
+    } else {
+      orphanTasks.push(task);
+    }
+  });
+
+  // Epics from map
+  const imported = Object.values(epicMap);
+
+  // If there are orphan tasks, group them
+  if (orphanTasks.length > 0) {
+    imported.push({ id: 'ungrouped', name: 'Ungrouped Tasks', prefix: 'task', priority: 3, tasks: orphanTasks, expanded: true });
+  }
+
+  // If nothing was parsed as epic, treat all as one group
+  if (imported.length === 0 && items.length > 0) {
+    const tasks = items.map(item => ({
+      id: item.id || item.bd_id || 'task',
+      name: item.title || item.name || item.id,
+      status: normalizeStatus(item.status || item.state || 'open')
+    }));
+    imported.push({ id: 'all', name: 'All Tasks', prefix: 'task', priority: 1, tasks, expanded: true });
+  }
+
+  epics = imported;
+  document.getElementById('import-modal').style.display = 'none';
+  document.getElementById('import-json').value = '';
+  switchTab('tracker');
+  renderTracker();
+}
+
+function normalizeStatus(s) {
+  s = (s || '').toLowerCase();
+  if (s === 'closed' || s === 'done' || s === 'complete' || s === 'completed') return 'done';
+  if (s === 'in_progress' || s === 'in-progress' || s === 'inprogress' || s === 'active') return 'in-progress';
+  return 'open';
+}
+
+// ===== TABS =====
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('pane-tracker').style.display = tab === 'tracker' ? 'block' : 'none';
+  document.getElementById('pane-prompts').style.display = tab === 'prompts' ? 'block' : 'none';
+  document.getElementById('tab-tracker').className = 'tab-btn' + (tab === 'tracker' ? ' active' : '');
+  document.getElementById('tab-prompts').className = 'tab-btn' + (tab === 'prompts' ? ' active' : '');
+  if (tab === 'prompts') renderPrompts();
+}
+
+// ===== RENDER PROMPTS =====
+function renderPrompts() {
+  const list = document.getElementById('prompts-list');
+  list.innerHTML = AGENT_PROMPTS.map((p, i) => `
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-tag" style="background:${p.tagColor};color:${p.tagTextColor}">${p.tag}</span>
+        <strong style="flex:1;font-size:14px;">${p.title}</strong>
+        <button class="copy-btn" id="copybtn-${i}" onclick="copyPrompt(${i})">Copy prompt</button>
+      </div>
+      <div class="prompt-card-body">
+        <div style="margin-bottom:6px;">${p.desc}</div>
+        <div class="prompt-text">${escHtml(p.text)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyPrompt(i) {
+  navigator.clipboard.writeText(AGENT_PROMPTS[i].text).then(() => {
+    const btn = document.getElementById('copybtn-' + i);
+    btn.textContent = '✓ Copied!';
+    btn.className = 'copy-btn copied';
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.className = 'copy-btn'; }, 2000);
+  });
+}
+
+// ===== RENDER TRACKER =====
+function renderTracker() {
+  const list = document.getElementById('epics-list');
+  let totalTasks = 0, doneTasks = 0, progressTasks = 0, openTasks = 0;
+
+  epics.forEach(e => {
+    e.tasks.forEach(t => {
+      totalTasks++;
+      if (t.status === 'done') doneTasks++;
+      else if (t.status === 'in-progress') progressTasks++;
+      else openTasks++;
+    });
+  });
+
+  document.getElementById('stat-epics').textContent = epics.length;
+  document.getElementById('stat-done').textContent = doneTasks;
+  document.getElementById('stat-progress').textContent = progressTasks;
+  document.getElementById('stat-open').textContent = openTasks;
+
+  const pct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+  document.getElementById('pct-label').textContent = pct + '%';
+  document.getElementById('pct-label2').textContent = doneTasks + ' of ' + totalTasks + ' tasks done';
+  document.getElementById('main-progress').style.width = pct + '%';
+
+  if (epics.length === 0) {
+    list.innerHTML = '<div class="empty-state">No epics yet.<br><br>Run <code style="color:var(--accent3)">bd list --json</code> in your terminal, then click <strong style="color:var(--accent)">⬆ Import from bd</strong><br>— or click <strong style="color:var(--accent)">↺ Demo Data</strong> to see an example.</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  epics.forEach(epic => {
+    const epicDone = epic.tasks.filter(t => t.status === 'done').length;
+    const epicTotal = epic.tasks.length;
+    const epicPct = epicTotal > 0 ? Math.round((epicDone / epicTotal) * 100) : 0;
+    const allDone = epicTotal > 0 && epicDone === epicTotal;
+    const inProg = epic.tasks.filter(t => t.status === 'in-progress').length;
+
+    const card = document.createElement('div');
+    card.className = 'epic-card' + (epic.expanded ? ' expanded' : '') + (allDone ? ' all-done' : '');
+
+    card.innerHTML = `
+      <div class="epic-card-header" onclick="toggleEpic('${epic.id}')">
+        <span class="epic-id">${epic.prefix || epic.id}</span>
+        <span class="epic-name">${epic.name}</span>
+        ${inProg > 0 ? `<span style="font-size:10px;background:rgba(247,151,30,0.15);color:var(--accent4);padding:2px 8px;border-radius:3px;font-family:'JetBrains Mono',monospace;">${inProg} in progress</span>` : ''}
+        <div class="epic-progress-inline">
+          <div class="mini-bar"><div class="mini-bar-fill" style="width:${epicPct}%"></div></div>
+          <span>${epicDone}/${epicTotal}</span>
+          ${allDone ? '<span style="color:var(--accent3)">✓</span>' : ''}
+        </div>
+        <button class="btn btn-red" onclick="event.stopPropagation();deleteEpic('${epic.id}')">✕</button>
+        <span class="epic-expand-btn">▼</span>
+      </div>
+      <div class="epic-tasks">
+        ${epic.tasks.length === 0
+          ? '<div style="color:var(--muted);font-size:12px;padding:8px 0;font-family:JetBrains Mono,monospace;">No tasks yet</div>'
+          : epic.tasks.map(task => `
+            <div class="task-row">
+              <div class="task-check ${task.status}" onclick="cycleTask('${epic.id}','${task.id}')">
+                ${task.status === 'done' ? '✓' : task.status === 'in-progress' ? '▶' : ''}
+              </div>
+              <span class="task-id-small" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);white-space:nowrap;">${task.id}</span>
+              <span class="task-name ${task.status === 'done' ? 'done' : ''}" style="flex:1;">${task.name}</span>
+              <span class="task-status-badge badge-${task.status === 'in-progress' ? 'inprogress' : task.status}">
+                ${task.status === 'in-progress' ? 'in progress' : task.status}
+              </span>
+              <button class="task-cycle-btn" onclick="cycleTask('${epic.id}','${task.id}')">→</button>
+              <button class="btn btn-red" onclick="deleteTask('${epic.id}','${task.id}')">✕</button>
+            </div>`).join('')}
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input id="tsk-${epic.id}" placeholder="+ Add task..." style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;" onkeydown="if(event.key==='Enter')addTask('${epic.id}')" />
+          <button class="btn btn-primary btn-small" onclick="addTask('${epic.id}')">Add</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+// ===== INTERACTIONS =====
+function toggleTracker() {
+  trackerOpen = !trackerOpen;
+  document.getElementById('tracker-body').className = 'tracker-body' + (trackerOpen ? ' open' : '');
+  document.getElementById('toggle-label').textContent = trackerOpen ? '▲ Collapse Tracker' : '▼ Expand Tracker';
+}
+
+function toggleAddEpic() {
+  addEpicOpen = !addEpicOpen;
+  document.getElementById('add-epic-form').style.display = addEpicOpen ? 'flex' : 'none';
+  if (addEpicOpen) setTimeout(() => document.getElementById('epic-name-input').focus(), 50);
+}
+
+function addEpic() {
+  const name = document.getElementById('epic-name-input').value.trim();
+  if (!name) return;
+  const prefix = document.getElementById('epic-prefix-input').value.trim() || ('e' + nextManualId);
+  const priority = parseInt(document.getElementById('epic-priority').value);
+  epics.push({ id: 'manual-' + nextManualId, name, prefix, priority, tasks: [], expanded: true });
+  nextManualId++;
+  document.getElementById('epic-name-input').value = '';
+  document.getElementById('epic-prefix-input').value = '';
+  toggleAddEpic();
+  renderTracker();
+}
+
+function deleteEpic(id) { epics = epics.filter(e => e.id !== id); renderTracker(); }
+
+function toggleEpic(id) {
+  const e = epics.find(e => e.id === id);
+  if (e) { e.expanded = !e.expanded; renderTracker(); }
+}
+
+function addTask(epicId) {
+  const input = document.getElementById('tsk-' + epicId);
+  const name = input ? input.value.trim() : '';
+  if (!name) return;
+  const epic = epics.find(e => e.id === epicId);
+  if (!epic) return;
+  const num = String(epic.tasks.length + 1).padStart(3, '0');
+  epic.tasks.push({ id: epic.prefix + '-' + num, name, status: 'open' });
+  renderTracker();
+}
+
+function deleteTask(epicId, taskId) {
+  const e = epics.find(e => e.id === epicId);
+  if (e) { e.tasks = e.tasks.filter(t => t.id !== taskId); renderTracker(); }
+}
+
+function cycleTask(epicId, taskId) {
+  const e = epics.find(e => e.id === epicId);
+  if (!e) return;
+  const t = e.tasks.find(t => t.id === taskId);
+  if (!t) return;
+  t.status = { 'open': 'in-progress', 'in-progress': 'done', 'done': 'open' }[t.status];
+  renderTracker();
+}
+
+// ===== AI STATUS UPDATE =====
+async function getAIUpdate() {
+  switchTab('tracker');
+  const box = document.getElementById('ai-box');
+  const spinner = document.getElementById('ai-spinner');
+  const textEl = document.getElementById('ai-text');
+
+  box.style.display = 'block';
+  spinner.style.display = 'block';
+  textEl.textContent = 'Analyzing your project state...';
+
+  let totalTasks = 0, doneTasks = 0, inProg = 0;
+  let summary = 'Current Beads project tracker state:\n\n';
+
+  if (epics.length === 0) {
+    spinner.style.display = 'none';
+    textEl.textContent = 'Load some data first — import from bd list --json or click Demo Data.';
+    return;
+  }
+
+  epics.forEach(e => {
+    const d = e.tasks.filter(t => t.status === 'done').length;
+    const p = e.tasks.filter(t => t.status === 'in-progress').length;
+    const o = e.tasks.filter(t => t.status === 'open').length;
+    totalTasks += e.tasks.length;
+    doneTasks += d;
+    inProg += p;
+    summary += `Epic: ${e.name} (${e.prefix}) — ${d}/${e.tasks.length} done, ${p} in progress\n`;
+    e.tasks.forEach(t => summary += `  [${t.status}] ${t.id}: ${t.name}\n`);
+    summary += '\n';
+  });
+
+  const pct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+  summary += `Overall: ${pct}% complete. ${doneTasks}/${totalTasks} tasks done. ${inProg} in progress.\n`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: `You are a sharp, concise project status assistant for an agentic development project using Beads task tracking.
+Given tracker state, write a 4-5 sentence developer-friendly status update covering:
+1. Overall health and momentum
+2. What's actively in progress
+3. What epic is closest to completion / what to focus on next
+4. One specific actionable recommendation (a specific task ID to work on next)
+Be direct, specific, and use the actual task/epic names from the data. No bullet points, just flowing sentences.`,
+        messages: [{ role: 'user', content: summary }]
+      })
+    });
+
+    const data = await res.json();
+    spinner.style.display = 'none';
+
+    if (data.content && data.content[0]) {
+      const text = data.content[0].text;
+      textEl.textContent = '';
+      let i = 0;
+      const iv = setInterval(() => { textEl.textContent += text[i]; i++; if (i >= text.length) clearInterval(iv); }, 14);
+    } else {
+      textEl.textContent = 'No response from API. Make sure you are using this inside Claude.ai.';
+    }
+  } catch(err) {
+    spinner.style.display = 'none';
+    textEl.textContent = 'API error: ' + err.message;
+  }
+}
+
+// ===== INIT =====
+renderTracker();
+renderPrompts();
+</script>
 </body>
 </html>
