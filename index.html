@@ -604,6 +604,8 @@
   <a href="#agent-loop">Agent Loop</a>
   <a href="#solo">Solo Workflow</a>
   <a href="#multi">Multi-Agent</a>
+  <a href="#superpowers">Superpowers</a>
+  <a href="#interrupt">Interrupt & Discuss</a>
   <a href="#commands">Commands</a>
   <a href="#tips">Tips</a>
 </nav>
@@ -904,9 +906,328 @@
 
   <div class="divider"></div>
 
-  <!-- SECTION 6: COMMAND REFERENCE -->
+  <!-- SECTION 6: SUPERPOWERS + BEADS -->
+  <div class="section" id="superpowers">
+    <div class="section-label">06 — Superpowers + Beads</div>
+    <h2>Planning with Superpowers, Executing with Beads</h2>
+    <p>Superpowers handles the <em>thinking</em> phase — brainstorming, planning, reviewing. Beads handles the <em>doing</em> phase — tracking, executing, persisting. Together they form a complete agentic development loop.</p>
+
+    <div class="flowchart">
+      <div class="flow-title">Full Superpowers + Beads Combined Workflow</div>
+      <div class="flow-row">
+        <div class="flow-node start">💬 You describe the feature<small>in plain language</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node action">/superpowers:brainstorm<small>Socratic Q&amp;A — tech choices, scope</small></div>
+      </div>
+      <div class="flow-arrow down">↓ you approve the design</div>
+      <div class="flow-row">
+        <div class="flow-node action">/superpowers:write-plan<small>agent writes detailed task plan</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node decision">You review &amp;<br>edit the plan<small>add context, change approach</small></div>
+      </div>
+      <div class="flow-arrow down">↓ approved</div>
+      <div class="flow-row">
+        <div class="flow-node agent">Agent creates Beads epic<small>bd create --type epic</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node agent">Agent files tasks + deps<small>bd create, bd dep add</small></div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-node action">/superpowers:execute-plan<small>subagents grind Beads tasks</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node agent">Code reviewer validates<small>each task reviewed before closing</small></div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-node end">🎉 Epic complete<small>bd epic status shows 100%</small></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge badge-agent">Full Example</span>
+        <span class="scenario-title">Building a Redis Caching Layer</span>
+      </div>
+      <div class="scenario-body">
+        <ol class="steps">
+          <li>
+            <div class="step-content">
+              <h4>Phase 1: Brainstorm with Superpowers</h4>
+              <p>You kick off a conversation. Superpowers intercepts and asks clarifying questions before any code is written.</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">Claude Code session</div>
+                </div>
+                <pre><span class="c-yellow">You:</span>      I want to add caching to our API
+
+<span class="c-purple">Superpowers:</span> Let me ask a few questions first...
+              - What are you caching? (sessions, query results, user data?)
+              - Scale needs? (single instance or distributed?)
+              - TTL requirements?
+              - Redis or in-memory?
+
+<span class="c-yellow">You:</span>      Session data, distributed, 24hr TTL, Redis
+
+<span class="c-purple">Superpowers:</span> Got it. I recommend ioredis over node-redis for
+              cluster support. Shall I write a plan?</pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <h4>Phase 2: Write & Review the Plan</h4>
+              <p>Superpowers writes a detailed plan — you read it, edit it, add constraints. This is your chance to steer before any code exists.</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">Claude Code session</div>
+                </div>
+                <pre><span class="c-purple">Superpowers:</span> Here's the plan (saved to PLAN_redis_cache.md):
+
+  Task 1: Add ioredis + types
+  Task 2: Create src/cache/redis.ts service
+  Task 3: Replace SessionStore with RedisSessionStore
+  Task 4: Integration tests (real Redis, not mocked)
+  Task 5: Update Docker Compose to include Redis
+
+<span class="c-yellow">You:</span>      Good, but add: key format must be session:{userId}:{id}
+              and never cache auth tokens directly. Update Task 2.
+
+<span class="c-purple">Superpowers:</span> Updated. Ready to convert this to Beads epics?</pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <h4>Phase 3: Convert Plan → Beads Tasks</h4>
+              <p>Agent translates the approved plan into Beads with full context embedded in each task description.</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">bash — what the agent runs</div>
+                </div>
+                <pre><span class="c-green">bd create</span> <span class="c-yellow">"Redis Caching Layer"</span> -t epic -p 1 \
+  --description <span class="c-yellow">"Distributed session cache via Redis/ioredis.
+Key format: session:{userId}:{sessionId}. TTL: 24h.
+Do NOT cache auth tokens."</span>
+<span class="c-muted"># → cache-001 (epic)</span>
+
+<span class="c-green">bd create</span> <span class="c-yellow">"Add ioredis dependency"</span> -t task -p 1 --parent cache-001
+<span class="c-green">bd create</span> <span class="c-yellow">"Create redis.ts cache service"</span> -t task -p 1 --parent cache-001
+<span class="c-green">bd create</span> <span class="c-yellow">"Replace SessionStore with RedisSessionStore"</span> -t task -p 1 --parent cache-001
+<span class="c-green">bd create</span> <span class="c-yellow">"Integration tests (real Redis)"</span> -t task -p 2 --parent cache-001
+<span class="c-green">bd create</span> <span class="c-yellow">"Add Redis to Docker Compose"</span> -t task -p 2 --parent cache-001
+
+<span class="c-muted"># Set dependency order</span>
+<span class="c-green">bd dep add</span> cache-003 --blocks cache-002  <span class="c-muted"># redis.ts must exist first</span>
+<span class="c-green">bd dep add</span> cache-004 --blocks cache-003  <span class="c-muted"># tests need store to exist</span></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-content">
+              <h4>Phase 4: Execute with Subagents</h4>
+              <p>Superpowers spawns isolated subagents per task. Each starts with clean context. A code reviewer validates before closing.</p>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                  <div class="code-lang">Claude Code session</div>
+                </div>
+                <pre><span class="c-yellow">You:</span>      /superpowers:execute-plan
+
+<span class="c-purple">Superpowers:</span> Starting subagent for cache-002 (Add ioredis)...
+              ✓ Done. Code reviewer passed.
+              bd update cache-002 --status closed
+
+              Starting subagent for cache-003 (redis.ts)...
+              ✓ Done. Code reviewer passed.
+              bd update cache-003 --status closed
+
+              Starting subagent for cache-004...
+              ⚠ Code reviewer flagged: auth token being cached!
+              Sending back to executor for fix...
+              ✓ Fixed. bd update cache-004 --status closed</pre>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">🧠</div>
+      <p><strong>The key distinction:</strong> Superpowers is where you <em>talk</em> to the agent about what and how. Beads is what survives that conversation — the structured, queryable record that future sessions and other agents can act on without re-explaining anything.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 7: INTERRUPT AND DISCUSS -->
+  <div class="section" id="interrupt">
+    <div class="section-label">07 — Interrupt &amp; Discuss</div>
+    <h2>Interrupting a Task &amp; Discussing Plans</h2>
+    <p>Agents sometimes go off-track, take shortcuts, or need your input mid-task. Here's how to pause, redirect, and embed your thinking into a task so future sessions don't lose it.</p>
+
+    <div class="flowchart">
+      <div class="flow-title">Interrupt Flow</div>
+      <div class="flow-row">
+        <div class="flow-node agent">Agent working on task<small>status: in_progress</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node decision">You want to<br>intervene?<small>wrong approach / needs discussion</small></div>
+      </div>
+      <div class="flow-arrow down">↓ yes</div>
+      <div class="flow-row">
+        <div class="flow-node action">bd update &lt;id&gt; --status open<small>unclaim the task</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node action">bd comment &lt;id&gt; "your note"<small>add context / redirect</small></div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-node action">bd update &lt;id&gt; --description<small>rewrite the approach if needed</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node agent">Agent picks it up fresh<small>reads updated task + comments</small></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge badge-solo">Interrupt Example</span>
+        <span class="scenario-title">Agent taking the wrong approach — stop &amp; redirect</span>
+      </div>
+      <div class="scenario-body">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            <div class="code-lang">bash — interrupt sequence</div>
+          </div>
+          <pre><span class="c-muted"># Agent is in_progress on cache-003 but using the wrong library</span>
+
+<span class="c-muted"># Step 1: Stop it — set back to open (unclaims it)</span>
+<span class="c-green">bd update</span> cache-003 --status open
+
+<span class="c-muted"># Step 2: Leave a comment explaining the redirect</span>
+<span class="c-green">bd comment</span> cache-003 <span class="c-yellow">"STOP — do not use node-redis.
+Use ioredis instead (supports cluster mode).
+See cache-002 for the installed package.
+Key format MUST be session:{userId}:{sessionId}"</span>
+
+<span class="c-muted"># Step 3 (optional): Rewrite the description with the corrected approach</span>
+<span class="c-green">bd update</span> cache-003 \
+  --description <span class="c-yellow">"Create src/cache/redis.ts using ioredis (NOT node-redis).
+Implement RedisSessionStore class.
+Key format: session:{userId}:{sessionId}
+TTL: 86400 seconds (24h)
+Do NOT cache auth tokens under any circumstance."</span>
+
+<span class="c-muted"># Agent picks it up next session, reads comments + new description</span>
+<span class="c-green">bd show</span> cache-003  <span class="c-muted"># verify it looks right before resuming</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge badge-multi">Discussion Example</span>
+        <span class="scenario-title">Embedding a full design discussion into a task</span>
+      </div>
+      <div class="scenario-body">
+        <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px;">Use this pattern when you've had a long discussion and want future agents (or yourself) to have the full context without re-explaining.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            <div class="code-lang">bash — embed discussion as task description</div>
+          </div>
+          <pre><span class="c-green">bd update</span> cache-003 --description <span class="c-yellow">"$(cat &lt;&lt;'EOF'
+GOAL: Redis session cache service
+
+DISCUSSION NOTES (agreed 2026-03-08 with human):
+- Use ioredis (not node-redis) — cluster support required
+- TTL: 86400s (24h) — non-negotiable per security policy
+- Key format: session:{userId}:{sessionId}
+- NEVER cache auth tokens — store them in httpOnly cookies only
+
+APPROACH:
+1. src/cache/redis.ts — RedisSessionStore class
+2. connect via REDIS_URL env var (fallback: localhost:6379)
+3. Methods: get(key), set(key, val, ttl), del(key)
+4. Wrap all ops in try/catch, log errors but don't throw
+
+OPEN QUESTIONS (decide before implementing):
+- Redis Cluster vs Sentinel? (ask human if unsure)
+- Should we use a connection pool? (default ioredis handles this)
+
+VERIFICATION:
+- Run: docker compose up redis
+- Run: npm test -- --testPathPattern=redis
+- Confirm TTL is set: redis-cli TTL session:test:abc
+EOF
+)"</span></pre>
+        </div>
+
+        <div class="tip" style="margin-top: 16px;">
+          <div class="tip-icon">💬</div>
+          <p><strong>Use bd comment for running notes, bd update --description for the source of truth.</strong> Comments are a thread (permanent log). Description is what the agent reads as its brief. Keep the description clean and current — use comments for history.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <span class="scenario-badge badge-agent">Handoff Example</span>
+        <span class="scenario-title">Handing a task from one agent to another</span>
+      </div>
+      <div class="scenario-body">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+            <div class="code-lang">bash — agent handoff</div>
+          </div>
+          <pre><span class="c-muted"># Agent 1 got stuck / context too long — hand off to Agent 2</span>
+
+<span class="c-muted"># Leave a detailed handoff comment</span>
+<span class="c-green">bd comment</span> cache-004 <span class="c-yellow">"HANDOFF from agent-1 to agent-2:
+- Completed: redis.ts service (cache-003 closed)
+- In progress: wiring RedisSessionStore into Express middleware
+- Blocker: session.ts line 47 — old MemoryStore import needs replacing
+- Next step: replace MemoryStore with RedisSessionStore, run tests
+- Files changed so far: src/cache/redis.ts, src/app.ts (partial)"</span>
+
+<span class="c-muted"># Reassign to new agent</span>
+<span class="c-green">bd update</span> cache-004 --assignee agent-2
+
+<span class="c-muted"># Agent 2 reads the full context</span>
+<span class="c-green">bd show</span> cache-004  <span class="c-muted"># sees description + all comments + assignee history</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 24px 0;">
+      <table class="cmd-table">
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Command</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Stop agent from continuing</td><td><code>bd update &lt;id&gt; --status open</code></td></tr>
+          <tr><td>Leave a note / redirect</td><td><code>bd comment &lt;id&gt; "your message"</code></td></tr>
+          <tr><td>Rewrite the task brief</td><td><code>bd update &lt;id&gt; --description "new plan"</code></td></tr>
+          <tr><td>Reassign to another agent</td><td><code>bd update &lt;id&gt; --assignee agent-2</code></td></tr>
+          <tr><td>See full comment history</td><td><code>bd show &lt;id&gt;</code></td></tr>
+          <tr><td>Mark it blocked (needs decision)</td><td><code>bd update &lt;id&gt; --status blocked</code></td></tr>
+          <tr><td>Check what agent is doing</td><td><code>bd list --status in_progress</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 8: COMMAND REFERENCE -->
   <div class="section" id="commands">
-    <div class="section-label">06 — Command Reference</div>
+    <div class="section-label">08 — Command Reference</div>
     <h2>Essential Commands Cheatsheet</h2>
 
     <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 24px 0;">
@@ -942,7 +1263,7 @@
 
   <!-- TIPS -->
   <div class="section" id="tips">
-    <div class="section-label">07 — Tips</div>
+    <div class="section-label">09 — Tips</div>
     <h2>Best Practices</h2>
 
     <div class="cards">
